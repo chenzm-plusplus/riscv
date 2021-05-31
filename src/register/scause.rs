@@ -20,10 +20,13 @@ pub enum Trap {
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Interrupt {
     UserSoft,
+    VirtualSupervisorSoft,
     SupervisorSoft,
     UserTimer,
+    VirtualSupervisorTimer,
     SupervisorTimer,
     UserExternal,
+    VirtualSupervisorExternal,
     SupervisorExternal,
     Unknown,
 }
@@ -40,10 +43,14 @@ pub enum Exception {
     StoreFault,
     UserEnvCall,
     HyperEnvCall,
-    VirtHyperEnvCall,
+    VirtualSupervisorEnvCall,
     InstructionPageFault,
     LoadPageFault,
     StorePageFault,
+    InstructionGuestPageFault,
+    LoadGuestPageFault,
+    VirtualInstruction,
+    StoreGuestPageFault,
     Unknown,
 }
 
@@ -52,10 +59,13 @@ impl Interrupt {
         match nr {
             0 => Interrupt::UserSoft,
             1 => Interrupt::SupervisorSoft,
+            2 => Interrupt::VirtualSupervisorSoft,
             4 => Interrupt::UserTimer,
             5 => Interrupt::SupervisorTimer,
+            6 => Interrupt::VirtualSupervisorTimer,
             8 => Interrupt::UserExternal,
             9 => Interrupt::SupervisorExternal,
+            10 => Interrupt::VirtualSupervisorExternal,
             _ => Interrupt::Unknown,
         }
     }
@@ -73,10 +83,14 @@ impl Exception {
             7 => Exception::StoreFault,
             8 => Exception::UserEnvCall,
             9 => Exception::HyperEnvCall,
-            10 => Exception::VirtHyperEnvCall,
+            10 => Exception::VirtualSupervisorEnvCall,
             12 => Exception::InstructionPageFault,
             13 => Exception::LoadPageFault,
             15 => Exception::StorePageFault,
+            20 => Exception::InstructionGuestPageFault,
+            21 => Exception::LoadGuestPageFault,
+            22 => Exception::VirtualInstruction,
+            23 => Exception::StoreGuestPageFault,
             _ => Exception::Unknown,
         }
     }
